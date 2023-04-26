@@ -17,6 +17,9 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
+    - name: Install Zip and Unzip
+      run: sudo apt-get install -y zip unzip
+
     - name: Download and Load Depot Tools
       run: |
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
@@ -46,7 +49,11 @@ jobs:
         gn gen out/Default
         autoninja -C out/Default
 
+    - name: Generate Artifact from Build
+      run: |
+        zip -r9Xq $GITHUB_WORKSPACE/devtools/front_end.zip $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
+
     - uses: actions/upload-artifact@v3
       with:
         name: DevtoolsFrontend
-        path: $GITHUB_WORKSPACE/devtools/devtools-frontend/out
+        path: $GITHUB_WORKSPACE/devtools/front_end.zip
