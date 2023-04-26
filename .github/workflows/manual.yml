@@ -41,7 +41,7 @@ jobs:
     - name: Build devtools-frontend
       run: |
         export PATH=$GITHUB_WORKSPACE/depot_tools:$PATH
-        cd devtools-frontend
+        cd $GITHUB_WORKSPACE/devtools/devtools-frontend
         gclient sync
         gn gen out/Default
         autoninja -C out/Default
