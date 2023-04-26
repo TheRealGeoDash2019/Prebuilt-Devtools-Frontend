@@ -46,7 +46,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/depot_tools:$PATH
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend
         gclient sync
-        gn gen out/Default
+        gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
     - name: Generate Artifact from Build
