@@ -56,4 +56,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: DevtoolsFrontend
-        path: $GITHUB_WORKSPACE/devtools/front_end.zip
+        path: ${{ github.workspace }}/devtools/front_end.zip
