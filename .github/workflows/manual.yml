@@ -49,11 +49,7 @@ jobs:
         gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
-    - name: Generate Artifact from Build
-      run: |
-        zip -r9Xq $GITHUB_WORKSPACE/devtools/front_end.zip $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
-
     - uses: actions/upload-artifact@v3
       with:
-        name: DevtoolsFrontend
-        path: ${{ github.workspace }}/devtools/front_end.zip
+        name: DevtoolsFrontend.zip
+        path: ${{ github.workspace }}/devtools/devtools-frontend/out/Default/gen/front_end
