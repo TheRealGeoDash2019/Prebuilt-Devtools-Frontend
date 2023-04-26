@@ -32,4 +32,4 @@ jobs:
       run: |
         echo "Hello ${{ inputs.name }}"
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
-        ls $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/depot_tools
