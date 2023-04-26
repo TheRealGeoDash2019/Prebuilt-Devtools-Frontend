@@ -28,8 +28,34 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
     # Runs a single command using the runners shell
-    - name: Send greeting
+    - name: Download and Load Depot Tools
       run: |
-        echo "Hello ${{ inputs.name }}"
         git clone https://chromium.googlesource.com/chromium/tools/depot_tools.git $GITHUB_WORKSPACE/depot_tools
-        ls $GITHUB_WORKSPACE/depot_tools
+        export PATH=$GITHUB_WORKSPACE/depot_tools:$PATH
+
+    - name: Configure Username
+      run: |
+        git config --global user.name "Github Actions"
+        git config --global user.email "github-actions@github.com"
+        git config --global core.autocrlf false
+        git config --global core.filemode false
+        git config --global color.ui true
+    
+    - name: Checkout devtools-frontend
+      run: |
+        cd $GITHUB_WORKSPACE
+        mkdir devtools
+        cd devtools
+        fetch devtools-frontend
+
+    - name: Build devtools-frontend
+      run: |
+        cd devtools-frontend
+        gclient sync
+        gn gen out/Default
+        autoninja -C out/Default
+
+    - uses: actions/upload-artifact@v3
+      with:
+        name: DevtoolsFrontend
+        path: $GITHUB_WORKSPACE/devtools/devtools-frontend
