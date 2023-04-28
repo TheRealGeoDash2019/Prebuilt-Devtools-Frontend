@@ -40,9 +40,11 @@ jobs:
         autoninja -C out/Default
 
     - name: Generate ZIP for Release
+      id: gen-zip
       run: |
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
         zip -9qrX $GITHUB_WORKSPACE/devtools-frontend.zip *
+        echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Publish Artifact
       uses: actions/upload-artifact@v3
@@ -56,8 +58,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.sha }}
-        release_name: Release ${{ github.sha }}
+        tag_name: ${{ steps.gen-zip.outputs.SHA_SHORT }}
+        release_name: Release ${{ steps.gen-zip.outputs.SHA_SHORT }}
         draft: false
         prerelease: false
     
