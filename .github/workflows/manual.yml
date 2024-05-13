@@ -5,6 +5,9 @@ on:
       purgenonenglishlocales: 
         type: boolean
         description: Remove Non-English locales
+      purgejsmaps: 
+        type: boolean
+        description: Remove All JS Maps
 
 jobs:
   compile:
@@ -45,10 +48,15 @@ jobs:
     - name: Purge Unnecessary Assets
       run: |
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
-        rm -rf ./testing ./legacy_test_runner
+        rm -rf ./testing ./legacy_test_runner ./tests.txt
         rm -rf ./panels/timeline/fixtures/traces/*
         rm -rf $(find ./ -type f -name "*.test.js*")
         rm -rf $(find ./ -type f -name "*tsconfig.json")
+
+    - name: Purge All JS Maps
+      if: "${{ github.event.inputs.purgejsmaps > '' && github.event.inputs.purgejsmaps }}"
+      run: |
+        rm -rf $(find ./ -type f -name "*.map")
 
     - name: Purge Non-English Locales
       if: "${{ github.event.inputs.purgenonenglishlocales > '' && github.event.inputs.purgenonenglishlocales }}"
