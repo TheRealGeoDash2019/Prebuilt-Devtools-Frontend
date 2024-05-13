@@ -54,12 +54,12 @@ jobs:
         rm -rf $(find ./ -type f -name "*tsconfig.json")
 
     - name: Purge All JS Maps
-      if: "${{ github.event.inputs.purgejsmaps !== 'false' && github.event.inputs.purgejsmaps == 'true' }}"
+      if: "${{ github.event.inputs.purgejsmaps == 'true' && github.event.inputs.purgejsmaps }}"
       run: |
         rm -rf $(find ./ -type f -name "*.map")
 
     - name: Purge Non-English Locales
-      if: "${{ github.event.inputs.purgenonenglishlocales > '' && github.event.inputs.purgenonenglishlocales }}"
+      if: "${{ github.event.inputs.purgenonenglishlocales == 'true' && github.event.inputs.purgenonenglishlocales }}"
       run: |
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/core/i18n/locales
         rm -rf $(ls --hide='en*')
