@@ -39,6 +39,10 @@ jobs:
         gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
+    - name: Purge Unnecessary Assets
+      run: |
+        echo "Coming Soon..."
+
     - name: Generate ZIP for Release
       id: gen-zip
       run: |
