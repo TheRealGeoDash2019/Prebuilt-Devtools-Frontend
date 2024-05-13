@@ -1,7 +1,10 @@
 name: Compile Devtools Frontend
 on:
   workflow_dispatch:
-
+    inputs: 
+      purgenonenglishlocales: 
+        type: boolean
+        description: Remove Non-English locales
 
 jobs:
   compile:
@@ -43,6 +46,14 @@ jobs:
       run: |
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
         rm -rf ./testing ./legacy_test_runner
+        rm -rf $(find ./ -type f -name "*.test.js*")
+        rm -rf $(find ./ -type f -name "*tsconfig.json")
+
+    - name: Purge Non-English Locales
+      if: "${{ github.event.inputs.purgenonenglishlocales > '' && github.event.inputs.purgenonenglishlocales }}"
+      run: |
+        cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/core/i18n/locales
+        rm -rf $(ls --hide='en*')
 
     - name: Generate ZIP for Release
       id: gen-zip
