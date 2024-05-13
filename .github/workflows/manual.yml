@@ -64,7 +64,7 @@ jobs:
         echo "SHA_SHORT=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
 
     - name: Publish Artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: DevtoolsFrontend
         path: ${{ github.workspace }}/devtools/devtools-frontend/out/Default/gen/front_end
