@@ -76,7 +76,7 @@ jobs:
       with:
         tag_name: ${{ steps.gen-zip.outputs.SHA_SHORT }}
         release_name: Release ${{ steps.gen-zip.outputs.SHA_SHORT }}
-        body: "English Only: ${{ github.workspace }}"
+        body: "English Only: ${{ github.event.inputs.purgenonenglishlocales || 'false' }}"
         draft: false
         prerelease: false
     
