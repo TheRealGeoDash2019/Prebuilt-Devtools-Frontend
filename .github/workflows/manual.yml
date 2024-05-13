@@ -41,7 +41,8 @@ jobs:
 
     - name: Purge Unnecessary Assets
       run: |
-        echo "Coming Soon..."
+        cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
+        rm -rf ./testing ./legacy_test_runner
 
     - name: Generate ZIP for Release
       id: gen-zip
