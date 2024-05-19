@@ -45,6 +45,11 @@ jobs:
         gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
+    - name: Generate Unpatched ZIP
+      run: |
+        cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
+        zip -9qrX $GITHUB_WORKSPACE/devtools-frontend-full.zip *
+
     - name: Purge Unnecessary Assets
       run: |
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
@@ -79,22 +84,16 @@ jobs:
 
     - name: Publish Release
       id: publish_release
-      uses: actions/create-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
+        make_latest: true
         tag_name: ${{ steps.gen-zip.outputs.SHA_SHORT }}
-        release_name: Release ${{ steps.gen-zip.outputs.SHA_SHORT }}
-        body: "English Only: ${{ github.event.inputs.purgenonenglishlocales || 'false' }}\nRemove JS Maps: ${{ github.event.inputs.purgejsmaps || 'false' }}"
+        name: Release ${{ steps.gen-zip.outputs.SHA_SHORT }}
+        body: "Build Type:\nEnglish Only: ${{ github.event.inputs.purgenonenglishlocales || 'false' }}\nRemove JS Maps: ${{ github.event.inputs.purgejsmaps || 'false' }}\n\nIf you want the full bundle, download the devtools-frontend-full.zip from the asset list."
         draft: false
         prerelease: false
-    
-    - name: Upload Release Assets
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.publish_release.outputs.upload_url }}
-        asset_path: ${{ github.workspace }}/devtools-frontend.zip
-        asset_name: devtools-frontend.zip
-        asset_content_type: application/zip
+        files: |
+          ${{ github.workspace }}/devtools-frontend.zip
+          ${{ github.workspace }}/devtools-frontend-full.zip
