@@ -16,11 +16,10 @@ jobs:
     - name: Install Zip and Unzip
       run: sudo apt-get install -y zip unzip
 
-    - name: Pull Pages Branch
-      uses: actions/checkout@v4
-      with:
-        ref: pages
-        path: pages
+    - name: Setup Pages Directory
+      run: |
+        mkdir $GITHUB_WORKSPACE/pages
+        ls $GITHUB_WORKSPACE/pages
 
     - name: Download and Load Depot Tools
       run: |
@@ -68,16 +67,15 @@ jobs:
       run: |
         cp -r $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/* $GITHUB_WORKSPACE/pages
 
-    - name: Push Pages Folder to Branch
-      uses: EndBug/add-and-commit@v9
+    - name: Publish to Cloudflare Pages
+      uses: cloudflare/pages-action@v1
       with:
-        add: '*'
-        cwd: ${{ github.workspace }}/pages
-        default_author: github_actions
-        message: 'Upload Files to Pages'
-        fetch: true
-        push: true
-        new_branch: pages
+        apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        projectName: devtools-frontend
+        directory: $GITHUB_WORKSPACE/pages
+        # Enable Wrangler v3
+        wranglerVersion: '3'
 
     - name: Purge All JS Maps
       if: "${{ github.event.inputs.purgejsmaps == 'true' && github.event.inputs.purgejsmaps }}"
