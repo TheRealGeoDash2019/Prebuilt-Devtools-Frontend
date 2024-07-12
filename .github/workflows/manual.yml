@@ -58,16 +58,22 @@ jobs:
         rm -rf $(find ./ -type f -name "*.test.js*")
         rm -rf $(find ./ -type f -name "*tsconfig.json")
 
-    - name: Copy Frontend to Pages
-      uses: EndBug/add-and-commit@v9.1.4
+    - name: Pull Pages Branch
+      uses: actions/checkout@v4
       with:
-        committer_name: GitHub Actions
-        committer_email: 41898282+github-actions[bot]@users.noreply.github.com
-        cwd: '$GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end'
-        add: '*'
-        fetch: true
-        message: "Upload Frontend"
-        new_branch: pages       
+        ref: pages
+        path: pages
+
+    - name: Copy Files to Pages
+      run: |
+        cd $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end
+        cp -r * $GITHUB_WORKSPACE/pages
+
+    - name: Push Pages Folder to Branch
+      uses: ad-m/github-push-action@master
+      with:
+        branch: pages
+        directory: "${{ github.workspace }}/pages"
 
     - name: Purge All JS Maps
       if: "${{ github.event.inputs.purgejsmaps == 'true' && github.event.inputs.purgejsmaps }}"
