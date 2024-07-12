@@ -73,7 +73,7 @@ jobs:
         apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         projectName: devtools-frontend
-        directory: $GITHUB_WORKSPACE/pages
+        directory: ${{ github.workspace }}/pages
         # Enable Wrangler v3
         wranglerVersion: '3'
 
