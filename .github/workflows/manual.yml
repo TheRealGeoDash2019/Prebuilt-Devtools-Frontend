@@ -66,9 +66,8 @@ jobs:
         cwd: '$GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end'
         add: '*'
         fetch: true
-        message: 'Upload Frontend: ${{ steps.gen-zip.outputs.SHA_SHORT }}'
-        new_branch: pages
-        pathspec_error_handling: ignore        
+        message: "Upload Frontend"
+        new_branch: pages       
 
     - name: Purge All JS Maps
       if: "${{ github.event.inputs.purgejsmaps == 'true' && github.event.inputs.purgejsmaps }}"
