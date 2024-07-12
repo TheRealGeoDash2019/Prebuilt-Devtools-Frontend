@@ -66,6 +66,7 @@ jobs:
     - name: Copy Files to Pages
       run: |
         cp -r $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/* $GITHUB_WORKSPACE/pages
+        cp $GITHUB_WORKSPACE/pages/devtools_app.html $GITHUB_WORKSPACE/pages/index.html
 
     - name: Publish to Cloudflare Pages
       uses: cloudflare/pages-action@v1
