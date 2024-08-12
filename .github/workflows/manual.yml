@@ -73,7 +73,7 @@ jobs:
       run: |
         cp -r $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/* $GITHUB_WORKSPACE/pages
         cp -r $GITHUB_WORKSPACE/extra $GITHUB_WORKSPACE/pages/extra
-        cp $GITHUB_WORKSPACE/pages/devtools_app.html $GITHUB_WORKSPACE/pages/index.html
+        sed 's/<\/script>/<\/script>\n<script src=".\/extra\/Theme.js"><\/script>/' $GITHUB_WORKSPACE/pages/devtools_app.html > $GITHUB_WORKSPACE/pages/index.html
 
     - name: Publish to Cloudflare Pages
       uses: cloudflare/pages-action@v1
