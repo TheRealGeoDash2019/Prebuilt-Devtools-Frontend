@@ -16,6 +16,12 @@ jobs:
     - name: Install Zip and Unzip
       run: sudo apt-get install -y zip unzip
 
+    - name: Checkout Extra Directory
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: |
+          extra
+
     - name: Setup Pages Directory
       run: |
         mkdir $GITHUB_WORKSPACE/pages
