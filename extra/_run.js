@@ -7,7 +7,7 @@ const DEVTOOLS_HTML = path.join(DEVTOOLS_DIR, "devtools_app.html");
 const INDEX_HTML = path.join(DEVTOOLS_DIR, "index.html");
 const CURRENT_FILE = path.join(process.cwd(), "_run.js");
 
-const indexContents = fs.readFileSync(DEVTOOLS_HTML);
+const indexContents = fs.readFileSync(DEVTOOLS_HTML, "utf-8");
 const newContents = indexContents.replace(`<script type="module" src="./entrypoints/devtools_app/devtools_app.js"></script>`, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
 });
