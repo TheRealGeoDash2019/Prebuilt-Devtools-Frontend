@@ -6,6 +6,6 @@
         __.rel = "stylesheet";
         __.href = "/extra/Theme.css";
         document.head.appendChild(__);
-        document.querySelector("html").style += ("--palette-primary: " + accentParam + "deg;");
+        document.querySelector(`html`).style.setProperty(`--palette-primary`, `${accentParam}deg`);
     }
 })();
