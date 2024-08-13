@@ -25,6 +25,8 @@ const newConnContents = connectionContents.replace(/export class WebSocket/gmi, 
     return (msgConnContents + old);
 }).replace(/websocketConnectionLost\);\s*\n\s*}/gmi, function(old) {
     return (old + " else if (messageParam) {\n    return new MessageConnection();\n  }");   
+}).replace(/const wssParam = Root.Runtime.Runtime.queryParam\(\"wss\"\);/gmi, function(old) {
+    return (old + `\n  const messageParam = Root.Runtime.Runtime.queryParam("msg");`);
 });
 
 fs.writeFileSync(CONNECTIONS_FILE, newConnContents);
