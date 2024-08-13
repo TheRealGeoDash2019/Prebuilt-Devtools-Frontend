@@ -72,6 +72,7 @@ jobs:
     - name: Copy Files to Pages
       run: |
         cp -r $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/* $GITHUB_WORKSPACE/pages
+        rm -rf $GITHUB_WORKSPACE/.git
         cp -r $GITHUB_WORKSPACE/extra $GITHUB_WORKSPACE/pages/extra
         cd $GITHUB_WORKSPACE/pages/extra && node ./_run.js
 
