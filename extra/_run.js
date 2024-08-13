@@ -28,4 +28,5 @@ fs.writeFileSync(CONNECTIONS_FILE, newConnContents);
 console.log(`[Patcher] Patched: /core/sdk/Connections.js`);
 
 fs.rmSync(CURRENT_FILE);
+fs.rmSync(MESSAGE_CONNECTION_TEMPLATE);
 process.exit(0);
