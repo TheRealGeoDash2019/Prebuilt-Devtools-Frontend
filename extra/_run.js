@@ -23,7 +23,10 @@ const msgConnContents = fs.readFileSync(MESSAGE_CONNECTION_TEMPLATE, "utf-8");
 const connectionContents = fs.readFileSync(CONNECTIONS_FILE, "utf-8");
 const newConnContents = connectionContents.replace(/export class WebSocket/gmi, function(old) {
     return (msgConnContents + old);
+}).replace(/websocketConnectionLost\);\s*\n\s*}/gmi, function(old) {
+    return (old + " else if (messageParam) {\n    return new MessageConnection();\n  }");   
 });
+
 fs.writeFileSync(CONNECTIONS_FILE, newConnContents);
 console.log(`[Patcher] Patched: /core/sdk/Connections.js`);
 
