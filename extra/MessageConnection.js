@@ -20,6 +20,8 @@ export class MessageConnection {
       once: true
     });
     window.addEventListener("message", (event) => {
+      const { origin } = event;
+      if (origin !== this.#host) return;
       if (this.onMessage) {
         this.onMessage.call(null, event.data);
       }
