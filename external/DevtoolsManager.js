@@ -6,7 +6,7 @@ class DevtoolsManager extends EventEmitter {
   _devtools = null;
   constructor() {
     super();
-    window.addEventListener("message", function(event) {
+    window.addEventListener("message", (event) => {
       const { origin } = event;
       if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://") || origin === location.origin)) {
         return;
