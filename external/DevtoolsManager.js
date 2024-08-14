@@ -54,7 +54,7 @@ class DevtoolsManager extends EventEmitter {
   close() {
     if (this._devtools === null) return;
     Array.from(document.querySelectorAll("body > *:not(iframe.__devtools-dnt__)") || []).forEach(e => e.style.maxWidth = "");
-    __.remove();
+    this._devtools.remove();
     this._devtools = null;
   }
 }
