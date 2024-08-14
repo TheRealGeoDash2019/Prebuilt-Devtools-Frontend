@@ -46,8 +46,12 @@ class DevtoolsManager extends EventEmitter {
     __.classList.add("__devtools-dnt__");
     __.style = `overflow: hidden;position: fixed;top: 0px;right: 0px;z-index: 99999;min-width: 20vw;height: 100vh;border: none;max-width: 50vw;width: 35vw;display:none;`;
     __.src = this._getUrl();
-    __.onload = function() {
+    __.onload = () => {
       __.style.display = "";
+      __.contentWindow.postMessage(JSON.stringify({
+          type: "devtools:client:init",
+          data: {}
+        }), this._host);
       __.onload = null;
     }
     document.body.appendChild(__);
