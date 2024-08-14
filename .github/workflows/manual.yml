@@ -21,6 +21,7 @@ jobs:
       with:
         sparse-checkout: |
           extra
+          external
 
     - name: Setup Pages Directory
       run: |
@@ -74,6 +75,7 @@ jobs:
         cp -r $GITHUB_WORKSPACE/devtools/devtools-frontend/out/Default/gen/front_end/* $GITHUB_WORKSPACE/pages
         rm -rf $GITHUB_WORKSPACE/.git
         cp -r $GITHUB_WORKSPACE/extra $GITHUB_WORKSPACE/pages/extra
+        cp -r $GITHUB_WORKSPACE/external $GITHUB_WORKSPACE/pages/external
         cd $GITHUB_WORKSPACE/pages/extra && node ./_run.js
 
     - name: Publish to Cloudflare Pages
