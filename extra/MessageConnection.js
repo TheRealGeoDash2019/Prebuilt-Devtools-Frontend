@@ -23,7 +23,11 @@ export class MessageConnection {
       const { origin } = event;
       if (origin !== this.#host) return;
       if (this.onMessage) {
-        this.onMessage.call(null, event.data);
+        try {
+          const _message = JSON.parse(event.data);
+          if (_message.type !== "devtools:client:message") return;
+          this.onMessage.call(null, _message.data);
+        } catch {};
       }
     })
   }
@@ -36,7 +40,8 @@ export class MessageConnection {
   sendRawMessage(message) {
     const target = (window.opener || window.parent);
     try {
-      target.postMessage(message, this.#host);
+      const _message = JSON.stringify({type: "devtools:server:message", data: message});
+      target.postMessage(_message, this.#host);
     } catch {
       return this.disconnect();
     }
