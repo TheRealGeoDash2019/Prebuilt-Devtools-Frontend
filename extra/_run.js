@@ -13,7 +13,7 @@ const CURRENT_FILE = path.join(process.cwd(), "_run.js");
 const indexContents = fs.readFileSync(DEVTOOLS_HTML, "utf-8");
 const newContents = indexContents.replace(`<script type="module" src="./entrypoints/devtools_app/devtools_app.js"></script>`, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
-});
+}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
 
 fs.writeFileSync(DEVTOOLS_HTML, newContents);
 fs.writeFileSync(INDEX_HTML, newContents);
