@@ -8,8 +8,10 @@ export class MessageConnection {
     this.#host = null;
     window.addEventListener("message", (event) => {
       const { origin } = event;
+      console.log(`[MessageConnection] Connection from:`, origin);
       if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
         if (this.#onDisconnect) {
+          console.log(`[MessageConnection] Closing: Invalid Origin`);
           this.#onDisconnect.call(null, "connection failed");
         }
         this.#onDisconnect = null;
@@ -21,6 +23,7 @@ export class MessageConnection {
     });
     window.addEventListener("message", (event) => {
       const { origin } = event;
+      console.log(`[MessageConnection] Message from:`, origin);
       if (origin !== this.#host) return;
       if (this.onMessage) {
         try {
