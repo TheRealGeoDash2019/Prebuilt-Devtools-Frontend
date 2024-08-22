@@ -8,7 +8,7 @@ export class MessageConnection {
     this.#host = null;
     window.addEventListener("message", (event) => {
       const { origin } = event;
-      if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://") || origin === location.origin)) {
+      if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
         if (this.#onDisconnect) {
           this.#onDisconnect.call(null, "connection failed");
         }
