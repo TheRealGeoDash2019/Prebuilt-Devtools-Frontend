@@ -3,6 +3,7 @@ export class MessageConnection {
   #onDisconnect;
   #host;
   constructor() {
+    console.log(`[MessageConnection] Initializing...`)
     this.onMessage = null;
     this.#onDisconnect = null;
     this.#host = null;
