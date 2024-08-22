@@ -7,21 +7,7 @@ export class MessageConnection {
     this.onMessage = null;
     this.#onDisconnect = null;
     this.#host = null;
-    window.addEventListener("message", (event) => {
-      const { origin } = event;
-      console.log(`[MessageConnection] Connection from:`, origin);
-      if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
-        if (this.#onDisconnect) {
-          console.log(`[MessageConnection] Closing: Invalid Origin`);
-          this.#onDisconnect.call(null, "connection failed");
-        }
-        this.#onDisconnect = null;
-        this.onMessage = null;
-      };
-      this.#host = origin;
-    }, {
-      once: true
-    });
+    window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
       console.log(`[MessageConnection] Message from:`, origin);
@@ -34,6 +20,21 @@ export class MessageConnection {
         } catch {};
       }
     })
+  }
+  _getParentOriginHandler(event) {
+    const { origin, data } = event;
+    if (data !== JSON.stringify({ type: "devtools:client:init", data: {} })) return;
+    console.log(`[MessageConnection] Connection from:`, origin);
+    if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
+      if (this.#onDisconnect) {
+        console.log(`[MessageConnection] Closing: Invalid Origin`);
+        this.#onDisconnect.call(null, "connection failed");
+      }
+      this.#onDisconnect = null;
+      this.onMessage = null;
+    };
+    this.#host = origin;
+    window.removeEventListener("message", this._getParentOriginHandler)
   }
   setOnMessage(onMessage) {
     this.onMessage = onMessage;
