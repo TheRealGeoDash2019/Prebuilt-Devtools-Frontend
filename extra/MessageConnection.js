@@ -16,6 +16,7 @@ export class MessageConnection {
         try {
           const _message = JSON.parse(event.data);
           if (_message.type !== "devtools:client:message") return;
+          console.log("[MessageConnection] Receiving Incoming Command.");
           this.onMessage.call(null, _message.data);
         } catch {};
       }
@@ -46,6 +47,7 @@ export class MessageConnection {
     const target = (window.opener || window.parent);
     try {
       const _message = JSON.stringify({type: "devtools:server:message", data: message});
+      console.log("[MessageConnection] Sending Outgoing Command.");
       target.postMessage(_message, this.host);
     } catch {
       return this.disconnect();
