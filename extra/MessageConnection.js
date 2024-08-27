@@ -1,17 +1,17 @@
 export class MessageConnection {
   onMessage;
-  #onDisconnect;
-  #host;
+  onDisconnect;
+  host;
   constructor() {
     console.log(`[MessageConnection] Initializing...`)
     this.onMessage = null;
-    this.#onDisconnect = null;
-    this.#host = null;
+    this.onDisconnect = null;
+    this.host = null;
     window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
       console.log(`[MessageConnection] Message from:`, origin);
-      if (origin !== this.#host) return;
+      if (origin !== this.host) return;
       if (this.onMessage) {
         try {
           const _message = JSON.parse(event.data);
@@ -24,23 +24,23 @@ export class MessageConnection {
   _getParentOriginHandler(event) {
     const { origin, data } = event;
     if (data !== JSON.stringify({ type: "devtools:client:init", data: {} })) return;
-    console.log(`[MessageConnection] Connection from:`, origin);
+    console.log(`[MessageConnection] Creating Connection to:`, origin);
     if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
-      if (this.#onDisconnect) {
-        console.log(`[MessageConnection] Closing: Invalid Origin`);
-        this.#onDisconnect.call(null, "connection failed");
+      if (this.onDisconnect) {
+        console.log(`[MessageConnection] Closing Connection: Invalid Origin`);
+        this.onDisconnect.call(null, "connection failed");
       }
-      this.#onDisconnect = null;
+      this.onDisconnect = null;
       this.onMessage = null;
     };
-    this.#host = origin;
+    this.host = origin;
     window.removeEventListener("message", this._getParentOriginHandler)
   }
   setOnMessage(onMessage) {
     this.onMessage = onMessage;
   }
   setOnDisconnect(onDisconnect) {
-    this.#onDisconnect = onDisconnect;
+    this.onDisconnect = onDisconnect;
   }
   sendRawMessage(message) {
     const target = (window.opener || window.parent);
@@ -52,10 +52,10 @@ export class MessageConnection {
     }
   }
   async disconnect() {
-    if (this.#onDisconnect) {
-      this.#onDisconnect.call(null, "force disconnect");
+    if (this.onDisconnect) {
+      this.onDisconnect.call(null, "force disconnect");
     }
-    this.#onDisconnect = null;
+    this.onDisconnect = null;
     this.onMessage = null;
   }
 }
