@@ -45,10 +45,11 @@ export class MessageConnection {
     this.onDisconnect = onDisconnect;
   }
   sendRawMessage(message) {
-    const target = (window.opener || window.parent);
+    const target = (window.parent || window.opener);
     try {
       const _message = JSON.stringify({type: "devtools:server:message", data: message});
       console.log("[MessageConnection] Sending Outgoing Command.");
+      console.log("[MessageConnection] Params:", target, this.host)
       target.postMessage(_message, this.host);
     } catch {
       return this.disconnect();
