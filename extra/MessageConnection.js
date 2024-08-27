@@ -46,7 +46,7 @@ export class MessageConnection {
     const target = (window.opener || window.parent);
     try {
       const _message = JSON.stringify({type: "devtools:server:message", data: message});
-      target.postMessage(_message, this.#host);
+      target.postMessage(_message, this.host);
     } catch {
       return this.disconnect();
     }
