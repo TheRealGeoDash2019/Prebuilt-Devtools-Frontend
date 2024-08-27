@@ -3,10 +3,11 @@ export class MessageConnection {
   onDisconnect;
   host;
   constructor() {
+    const _ = new URLSearchParams(location.search);
     console.log(`[MessageConnection] Initializing...`)
     this.onMessage = null;
     this.onDisconnect = null;
-    this.host = null;
+    this.host = _.get("msgorigin") || null;
     window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
