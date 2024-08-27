@@ -25,7 +25,8 @@ class DevtoolsManager extends EventEmitter {
   }
 
   _getUrl(accent = null) {
-    return (this._host + "?msg=true" + (accent? ("&accent=" + accent) : ""));
+    const _origin = new URL(window.location.href);
+    return ((this._host + "?msg=true" + (accent? ("&accent=" + accent) : "")) + "&origin=" + encodeURIComponent(_origin.origin));
   }
 
   sendMessage(data) {
