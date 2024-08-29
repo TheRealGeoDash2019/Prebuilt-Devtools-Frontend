@@ -24,7 +24,7 @@ class DevtoolsManager extends EventEmitter {
     })
   }
 
-  _getUrl(accent = null) {
+  _getUrl(accent = 160) {
     const _origin = new URL(window.location.href);
     return ((this._host + "?msg=true" + (accent? ("&accent=" + accent) : "")) + "&msgorigin=" + encodeURIComponent(_origin.origin));
   }
@@ -41,8 +41,22 @@ class DevtoolsManager extends EventEmitter {
     } catch {};
   }
 
-  launch() {
+  launch(popup = false) {
     if (this._devtools !== null) return;
+    if (popup === true) {
+      const _devtoolsWindow = window.open(this._getUrl(), "_blank", "popup=true");
+      _devtoolsWindow.postMessage(JSON.stringify({
+          type: "devtools:client:init",
+          data: {}
+      }), this._host);
+      this._devtools = {
+        contentWindow: _devtoolsWindow,
+        remove: function() {
+          return this.contentWindow.close();
+        }
+      };
+      return;
+    }
     const __ = document.createElement(`iframe`);
     __.classList.add("__devtools-dnt__");
     __.style = `overflow: hidden;position: fixed;top: 0px;right: 0px;z-index: 99999;min-width: 20vw;height: 100vh;border: none;max-width: 50vw;width: 35vw;display:none;`;
