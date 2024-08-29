@@ -12,7 +12,7 @@ export class MessageConnection {
       const target = (window.parent || window.opener);
       if (target) {
         const _message = JSON.stringify({type: "devtools:server:init", data: {}});
-        console.log(`[MessageConnection] Sending Init Payload...`)
+        // console.log(`[MessageConnection] Sending Init Payload...`)
         // Send Init 10x
         for (let i = 0; i < 10; i++) {
           target.postMessage(_message, this.host);
@@ -22,13 +22,13 @@ export class MessageConnection {
     window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
-      console.log(`[MessageConnection] Message from:`, origin);
+      // console.log(`[MessageConnection] Message from:`, origin);
       if (origin !== this.host) return;
       if (this.onMessage) {
         try {
           const _message = JSON.parse(event.data);
           if (_message.type !== "devtools:client:message") return;
-          console.log("[MessageConnection] Receiving Incoming Command.");
+          // console.log("[MessageConnection] Receiving Incoming Command.");
           this.onMessage.call(null, _message.data);
         } catch {};
       }
@@ -59,8 +59,8 @@ export class MessageConnection {
     const target = (window.parent || window.opener);
     try {
       const _message = JSON.stringify({type: "devtools:server:message", data: message});
-      console.log("[MessageConnection] Sending Outgoing Command.");
-      console.log("[MessageConnection] Params:", target, this.host)
+      // console.log("[MessageConnection] Sending Outgoing Command.");
+      // console.log("[MessageConnection] Params:", target, this.host)
       target.postMessage(_message, this.host);
     } catch {
       return this.disconnect();
