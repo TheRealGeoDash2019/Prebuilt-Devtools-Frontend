@@ -8,6 +8,17 @@ export class MessageConnection {
     this.onMessage = null;
     this.onDisconnect = null;
     this.host = _.get("msgorigin") || null;
+    if (this.host) {
+      const target = (window.parent || window.opener);
+      if (target) {
+        const _message = JSON.stringify({type: "devtools:server:init", data: {}});
+        console.log(`[MessageConnection] Sending Init Payload...`)
+        // Send Init 10x
+        for (let i = 0; i < 10; i++) {
+          target.postMessage(_message, this.host);
+        }
+      }
+    }
     window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
