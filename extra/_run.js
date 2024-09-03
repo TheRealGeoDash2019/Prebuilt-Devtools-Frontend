@@ -7,6 +7,7 @@ const DEVTOOLS_HTML = path.join(DEVTOOLS_DIR, "devtools_app.html");
 const INDEX_HTML = path.join(DEVTOOLS_DIR, "index.html");
 const MESSAGE_CONNECTION_TEMPLATE = path.join(process.cwd(), "MessageConnection.js");
 const CONNECTIONS_FILE = path.join(DEVTOOLS_DIR, "core/sdk/Connections.js");
+const DEVTOOLS_ICON = path.join(DEVTOOLS_DIR, "Images/devtools.svg");
 const CURRENT_FILE = path.join(process.cwd(), "_run.js");
 
 // Patch devtools_app.html and index.html
@@ -31,6 +32,13 @@ const newConnContents = connectionContents.replace(/export class WebSocket/gmi, 
 
 fs.writeFileSync(CONNECTIONS_FILE, newConnContents);
 console.log(`[Patcher] Patched: /core/sdk/Connections.js`);
+
+const iconContents = fs.readFileSync(DEVTOOLS_ICON, "utf-8");
+const newIconContents = iconContents.replace(`#1A73E8`, `currentColor`);
+
+fs.writeFileSync(DEVTOOLS_ICON, newIconContents);
+console.log(`[Patcher] Patched: /Images/devtools.svg`);
+
 
 fs.rmSync(CURRENT_FILE);
 fs.rmSync(MESSAGE_CONNECTION_TEMPLATE);
