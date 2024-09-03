@@ -4,21 +4,37 @@ const path = require("path");
 const DEVTOOLS_DIR = path.join(process.cwd(), "..");
 
 const DEVTOOLS_HTML = path.join(DEVTOOLS_DIR, "devtools_app.html");
+const NODE_HTML = path.join(DEVTOOLS_DIR, "node_app.html");
+const INSPECTOR_HTML = path.join(DEVTOOLS_DIR, "inspector.html");
 const INDEX_HTML = path.join(DEVTOOLS_DIR, "index.html");
 const MESSAGE_CONNECTION_TEMPLATE = path.join(process.cwd(), "MessageConnection.js");
 const CONNECTIONS_FILE = path.join(DEVTOOLS_DIR, "core/sdk/Connections.js");
 const DEVTOOLS_ICON = path.join(DEVTOOLS_DIR, "Images/devtools.svg");
 const CURRENT_FILE = path.join(process.cwd(), "_run.js");
 
+const regexIndexContents = (/<script type="module" src=".\/entrypoints\/[a-z0-9]*_app\/[a-z0-9]*_app.js"><\/script>/gmi);
+
 // Patch devtools_app.html and index.html
 const indexContents = fs.readFileSync(DEVTOOLS_HTML, "utf-8");
-const newContents = indexContents.replace(`<script type="module" src="./entrypoints/devtools_app/devtools_app.js"></script>`, function(old) {
+const nodeContents = fs.readFileSync(NODE_HTML, "utf-8"); 
+const inspectorContents = fs.readFileSync(NODE_HTML, "utf-8"); 
+const newIndexContents = indexContents.replace(regexIndexContents, function(old) {
+  return old + `\n<script src="./extra/Theme.js"></script>`
+}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
+const newNodeContents = nodeContents.replace(regexIndexContents, function(old) {
+  return old + `\n<script src="./extra/Theme.js"></script>`
+}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
+const newInspectorContents = inspectorContents.replace(regexIndexContents, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
 }).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
 
+
+
 fs.writeFileSync(DEVTOOLS_HTML, newContents);
+fs.writeFileSync(NODE_HTML, newContents);
+fs.writeFileSync(INSPECTOR_HTML, newContents);
 fs.writeFileSync(INDEX_HTML, newContents);
-console.log(`[Patcher] Patched: devtools_app.html, index.html`);
+console.log(`[Patcher] Patched: devtools_app.html, node_app.html, inspector.html, index.html`);
 // Patch /core/sdk/Connections.js
 const msgConnContents = fs.readFileSync(MESSAGE_CONNECTION_TEMPLATE, "utf-8");
 const connectionContents = fs.readFileSync(CONNECTIONS_FILE, "utf-8");
