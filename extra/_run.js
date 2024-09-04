@@ -30,10 +30,10 @@ const newInspectorContents = inspectorContents.replace(regexIndexContents, funct
 
 
 
-fs.writeFileSync(DEVTOOLS_HTML, newContents);
-fs.writeFileSync(NODE_HTML, newContents);
-fs.writeFileSync(INSPECTOR_HTML, newContents);
-fs.writeFileSync(INDEX_HTML, newContents);
+fs.writeFileSync(DEVTOOLS_HTML, newIndexContents);
+fs.writeFileSync(NODE_HTML, newNodeContents);
+fs.writeFileSync(INSPECTOR_HTML, newInspectorContents);
+fs.writeFileSync(INDEX_HTML, newIndexContents);
 console.log(`[Patcher] Patched: devtools_app.html, node_app.html, inspector.html, index.html`);
 // Patch /core/sdk/Connections.js
 const msgConnContents = fs.readFileSync(MESSAGE_CONNECTION_TEMPLATE, "utf-8");
