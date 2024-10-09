@@ -1,3 +1,5 @@
+@property --palette-primary { syntax: '<angle>'; initial-value: 0; inherits: false; }
+
 :root {
   --palette-secondary: calc(var(--palette-primary) + 4deg) !important;
   --ref-palette-primary0: var(--color-ref-primary0, rgb(0 0 0 / 100%)) !important;
@@ -29,4 +31,23 @@
   --ref-palette-secondary95: var(--color-ref-secondary95, hsl(var(--palette-secondary) 100% 93.73%)) !important;
   --ref-palette-secondary99: var(--color-ref-secondary99, hsl(var(--palette-secondary) 100% 98.43%)) !important;
   --ref-palette-secondary100: var(--color-ref-secondary100, rgb(255 255 255 / 100%)) !important;
+}
+
+
+@keyframes rainbowUi {
+  0% { --palette-primary: 0deg }
+  10% { --palette-primary: 36deg }
+  20% { --palette-primary: 72deg }
+  30% { --palette-primary: 108deg }
+  40% { --palette-primary: 144deg }
+  50% { --palette-primary: 180deg }
+  60% { --palette-primary: 216deg }
+  70% { --palette-primary: 252deg }
+  80% { --palette-primary: 288deg }
+  90% { --palette-primary: 324deg }
+  100% { --palette-primary: 360deg }
+}
+
+* {
+    transition: background 3s, background-color 3s, color 3s, border-bottom 3s, border-top 3s, border-left 3s, border-right 3s !important;
 }
