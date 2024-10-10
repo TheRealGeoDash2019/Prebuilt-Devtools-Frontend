@@ -48,6 +48,6 @@
   100% { --palette-primary: 360deg }
 }
 
-* {
+body.rainbow *, html.rainbow * {
     transition: background 3s, background-color 3s, color 3s, border-bottom 3s, border-top 3s, border-left 3s, border-right 3s !important;
 }
