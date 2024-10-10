@@ -10,6 +10,8 @@
         document.querySelector(`html`).style.setProperty(`--palette-primary`, `${accentParam}deg`);
         if (rainbowParam) {
           document.querySelector("html").style.animation = "3s linear rainbowUi infinite";
+          document.querySelector("html").classList.add("rainbow");
+          document.querySelector("body").classList.add("rainbow");
         }
     }
 })();
