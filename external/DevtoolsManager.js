@@ -6,7 +6,7 @@ var ReflectOwnKeys,R="object"==typeof Reflect?Reflect:null,ReflectApply=R&&"func
 // window.cb = chobitsu;
 
 class DevtoolsManager extends EventEmitter {
-  _host = "https://devtools-frontend.pages.dev/";
+  _host = "https://devtools-frontend.pages.dev/?__chobitsu-hide__=true";
   _devtools = null;
   constructor() {
     super();
@@ -26,7 +26,7 @@ class DevtoolsManager extends EventEmitter {
 
   _getUrl(accent = 160) {
     const _origin = new URL(window.location.href);
-    return ((this._host + "?msg=true" + (accent? ("&accent=" + accent) : "")) + "&msgorigin=" + encodeURIComponent(_origin.origin));
+    return ((this._host + "&msg=true" + (accent? ("&accent=" + accent) : "")) + "&msgorigin=" + encodeURIComponent(_origin.origin));
   }
 
   sendMessage(data) {
@@ -59,6 +59,7 @@ class DevtoolsManager extends EventEmitter {
     }
     const __ = document.createElement(`iframe`);
     __.classList.add("__devtools-dnt__");
+    __.classList.add("__chobitsu-hide__");
     __.style = `overflow: hidden;position: fixed;top: 0px;right: 0px;z-index: 99999;min-width: 20vw;height: 100vh;border: none;max-width: 50vw;width: 35vw;display:none;`;
     __.src = this._getUrl();
     __.onload = () => {
