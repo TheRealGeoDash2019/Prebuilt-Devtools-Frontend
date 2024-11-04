@@ -22,8 +22,8 @@ export class MessageConnection {
     window.addEventListener("message", this._getParentOriginHandler);
     window.addEventListener("message", (event) => {
       const { origin } = event;
-      // console.debug(`[MessageConnection] Message from:`, origin);
-      if (origin !== this.host) return;
+      console.debug(`[MessageConnection] Message from:`, origin);
+      if ((origin !== this.host) && (this.host !== "*")) return;
       if (this.onMessage) {
         try {
           const _message = JSON.parse(event.data);
@@ -37,7 +37,7 @@ export class MessageConnection {
   _getParentOriginHandler(event) {
     const { origin, data } = event;
     if (data !== JSON.stringify({ type: "devtools:client:init", data: {} })) return;
-    console.log(`[MessageConnection] Creating Connection to:`, origin);
+    console.debug(`[MessageConnection] Creating Connection to:`, origin);
     if (!origin || (!origin?.startsWith?.("http://") && !origin?.startsWith?.("https://")) || (origin === location.origin)) {
       if (this.onDisconnect) {
         console.log(`[MessageConnection] Closing Connection: Invalid Origin`);
