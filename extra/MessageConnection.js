@@ -7,7 +7,7 @@ export class MessageConnection {
     console.log(`[MessageConnection] Initializing...`)
     this.onMessage = null;
     this.onDisconnect = null;
-    this.host = _.get("msgorigin") || null;
+    this.host = _.get("msgorigin") || "*";
     if (this.host) {
       const target = (window.parent || window.opener);
       if (target) {
