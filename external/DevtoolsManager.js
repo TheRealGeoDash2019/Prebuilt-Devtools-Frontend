@@ -36,7 +36,7 @@ class DevtoolsManager extends EventEmitter {
         _window.postMessage(JSON.stringify({
           type: "devtools:client:message",
           data: data
-        }), this._host);
+        }), "*");
       }
     } catch {};
   }
@@ -48,7 +48,7 @@ class DevtoolsManager extends EventEmitter {
       _devtoolsWindow.postMessage(JSON.stringify({
           type: "devtools:client:init",
           data: {}
-      }), this._host);
+      }), "*");
       this._devtools = {
         contentWindow: _devtoolsWindow,
         remove: function() {
@@ -67,7 +67,7 @@ class DevtoolsManager extends EventEmitter {
       __.contentWindow.postMessage(JSON.stringify({
           type: "devtools:client:init",
           data: {}
-        }), this._host);
+        }), "*");
       __.onload = null;
     }
     document.body.appendChild(__);
