@@ -14,12 +14,12 @@ const PANELS = fs.readdirSync(PANELS_DIR, { withFileTypes: true }).filter(o => o
 console.log(`[Patcher] Found ${PANELS.length} Panel Directories`);
 
 for (const panel of PANELS) {
-  const HAS_META = fs.existsSync(path.join(PANELS_DIR, panel.name + "-meta.ts"));
+  const HAS_META = fs.existsSync(path.join(PANELS_DIR, panel.name + `/${panel.name}-meta.ts`));
   if (HAS_META && !permittedPanels.includes(panel.name)) {
     console.log(`[Patcher] Disabling ${panel.name} from DevTools`);
     // const META_CONTENTS = fs.readFileSync(path.join(PANELS_DIR, panel.name + "-meta.ts"));
     // const NEW_CONTENTS = META_CONTENTS.replaceAll("UI.ViewManager.registerViewExtension", ";(function noop(){})");
-    fs.writeFileSync(path.join(PANELS_DIR, panel.name + "-meta.ts"), Buffer.from([]));
+    fs.writeFileSync(path.join(PANELS_DIR, panel.name + `/${panel.name}-meta.ts`), Buffer.from([]));
     console.log(`[Patcher] Disabled ${panel.name}`);
   }
 }
