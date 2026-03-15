@@ -7,7 +7,7 @@ const DEVTOOLS_FRONTEND = process.cwd();
 const FRONTEND_DIR = path.join(DEVTOOLS_FRONTEND, "front_end");
 const PANELS_DIR = path.join(FRONTEND_DIR, "panels");
 
-const permittedPanels = ["application", "console", "developer_resources", "elements", "network", "protocol_monitor", "settings", "sources"];
+const permittedPanels = ["application", "console", "developer_resources", "elements", "mobile_throttling", "network", "protocol_monitor", "settings", "sources"];
 
 const PANELS = fs.readdirSync(PANELS_DIR, { withFileTypes: true }).filter(o => o.isDirectory());
 
