@@ -54,7 +54,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/depot_tools:$PATH
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend
         gclient sync
-        node $GITHUB_WORKSPACE/pages/extra/_prerun.js
+        node $GITHUB_WORKSPACE/extra/_prerun.js
         gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
@@ -78,6 +78,7 @@ jobs:
         cp -r $GITHUB_WORKSPACE/extra $GITHUB_WORKSPACE/pages/extra
         cp -r $GITHUB_WORKSPACE/external $GITHUB_WORKSPACE/pages/external
         cd $GITHUB_WORKSPACE/pages/extra && node ./_run.js
+        rm -rf ./_run.js ./_prerun.js
 
     - name: Publish to Cloudflare Pages
       uses: cloudflare/pages-action@v1
