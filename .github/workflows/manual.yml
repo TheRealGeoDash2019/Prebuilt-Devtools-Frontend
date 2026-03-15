@@ -54,6 +54,7 @@ jobs:
         export PATH=$GITHUB_WORKSPACE/depot_tools:$PATH
         cd $GITHUB_WORKSPACE/devtools/devtools-frontend
         gclient sync
+        node $GITHUB_WORKSPACE/pages/extra/_prerun.js
         gn gen out/Default --args='devtools_skip_typecheck=true'
         autoninja -C out/Default
 
