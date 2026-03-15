@@ -8,7 +8,7 @@ const NODE_HTML = path.join(DEVTOOLS_DIR, "node_app.html");
 const INSPECTOR_HTML = path.join(DEVTOOLS_DIR, "inspector.html");
 const INDEX_HTML = path.join(DEVTOOLS_DIR, "index.html");
 const MESSAGE_CONNECTION_TEMPLATE = path.join(process.cwd(), "MessageConnection.js");
-const CONNECTIONS_FILE = path.join(DEVTOOLS_DIR, "core/sdk/sdk.js");
+const SDK_FILE = path.join(DEVTOOLS_DIR, "core/sdk/sdk.js");
 const DEVTOOLS_ICON = path.join(DEVTOOLS_DIR, "Images/devtools.svg");
 const CURRENT_FILE = path.join(process.cwd(), "_run.js");
 
@@ -37,17 +37,17 @@ fs.writeFileSync(INDEX_HTML, newIndexContents);
 console.log(`[Patcher] Patched: devtools_app.html, node_app.html, inspector.html, index.html`);
 // Patch /core/sdk/Connections.js
 const msgConnContents = fs.readFileSync(MESSAGE_CONNECTION_TEMPLATE, "utf-8");
-const connectionContents = fs.readFileSync(CONNECTIONS_FILE, "utf-8");
-const newConnContents = connectionContents.replace(/var WebSocketTransport = class {/gmi, function(old) {
+const sdkContents = fs.readFileSync(SDK_FILE, "utf-8");
+const newSDKContents = sdkContents.replace(/var WebSocketTransport = class {/gmi, function(old) {
     return (msgConnContents + "\n" + old);
 }).replace(/ws, onConnectionLost\);\s*\n\s*}/gmi, function(old) {
-    return (old + " else if (messageParam) {\n    return new MessageConnection();\n  }");   
-}).replace(/const wssParam = Root.Runtime.Runtime.queryParam\(\"wss\"\);/gmi, function(old) {
-    return (old + `\n  const messageParam = Root.Runtime.Runtime.queryParam("msg");`);
+    return (old + " else if (messageParam) {\n    return new MessageTransport();\n  }");   
+}).replace(/const wssParam = Root13.Runtime.Runtime.queryParam\(\"wss\"\);/gmi, function(old) {
+    return (old + `\n  const messageParam = Root13.Runtime.Runtime.queryParam("msg");`);
 });
 
-fs.writeFileSync(CONNECTIONS_FILE, newConnContents);
-console.log(`[Patcher] Patched: /core/sdk/Connections.js`);
+fs.writeFileSync(SDK_FILE, newSDKContents);
+console.log(`[Patcher] Patched: /core/sdk/sdk.js`);
 
 const iconContents = fs.readFileSync(DEVTOOLS_ICON, "utf-8");
 const newIconContents = iconContents.replace(`#1A73E8`, `currentColor`);
