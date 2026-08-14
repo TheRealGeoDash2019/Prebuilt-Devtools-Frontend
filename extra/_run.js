@@ -42,8 +42,8 @@ const newSDKContents = sdkContents.replace(/var WebSocketTransport = class {/gmi
     return (msgConnContents + "\n" + old);
 }).replace(/ws, onConnectionLost\);\s*\n\s*}/gmi, function(old) {
     return (old + " else if (messageParam) {\n    return new MessageTransport();\n  }");   
-}).replace(/const wssParam = Root13.Runtime.Runtime.queryParam\(\"wss\"\);/gmi, function(old) {
-    return (old + `\n  const messageParam = Root13.Runtime.Runtime.queryParam("msg");`);
+}).replace(/const wssParam = Root([a-z1-9]{0,3}).Runtime.Runtime.queryParam\(\"wss\"\);/gmi, function(old, rootRevision) {
+    return (old + `\n  const messageParam = Root${rootRevision}.Runtime.Runtime.queryParam("msg");`);
 });
 
 fs.writeFileSync(SDK_FILE, newSDKContents);
