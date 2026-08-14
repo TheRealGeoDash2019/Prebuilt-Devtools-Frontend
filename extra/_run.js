@@ -17,7 +17,7 @@ const regexIndexContents = (/<script type="module" src=".\/entrypoints\/[a-z0-9]
 // Patch devtools_app.html and index.html
 const indexContents = fs.readFileSync(DEVTOOLS_HTML, "utf-8");
 const nodeContents = fs.readFileSync(NODE_HTML, "utf-8"); 
-const inspectorContents = fs.readFileSync(NODE_HTML, "utf-8"); 
+const inspectorContents = fs.readFileSync(INSPECTOR_HTML, "utf-8"); 
 const newIndexContents = indexContents.replace(regexIndexContents, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
 }).replace(/<meta http-equiv="Content-Security-Policy" content="[^"]+">/gmi, ``);
