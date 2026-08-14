@@ -20,13 +20,13 @@ const nodeContents = fs.readFileSync(NODE_HTML, "utf-8");
 const inspectorContents = fs.readFileSync(NODE_HTML, "utf-8"); 
 const newIndexContents = indexContents.replace(regexIndexContents, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
-}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
+}).replace(/<meta http-equiv="Content-Security-Policy" content="[^"]+">/gmi, ``);
 const newNodeContents = nodeContents.replace(regexIndexContents, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
-}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
+}).replace(/<meta http-equiv="Content-Security-Policy" content="[^"]+">/gmi, ``);
 const newInspectorContents = inspectorContents.replace(regexIndexContents, function(old) {
   return old + `\n<script src="./extra/Theme.js"></script>`
-}).replace(`<meta http-equiv="Content-Security-Policy" content="object-src 'none'; script-src 'self' https://chrome-devtools-frontend.appspot.com">`, ``);
+}).replace(/<meta http-equiv="Content-Security-Policy" content="[^"]+">/gmi, ``);
 
 
 
